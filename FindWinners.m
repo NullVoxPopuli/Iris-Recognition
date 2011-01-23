@@ -1,4 +1,4 @@
-function [pseudo, bin, sWinner, pWinner] = FindWinners(magImg, dirImg, img)
+function [pseudo, bin, Sclera_Winners, Pupil_Winners] = FindWinners(magImg, dirImg, img)
 % Subsample
 %magImg = magImg(1:2:size(magImg,1),1:2:size(magImg,2));
 %dirImg = dirImg(1:2:size(dirImg,1),1:2:size(dirImg,2));
@@ -43,7 +43,7 @@ for rIndex = 1 : size(radii2,2) % For each possible radius being considered
 end
 
 % Find local maxima for iris/pupil boundary
-pWinners = [];
+Pupil_Winners = [];
 mostVotes = max(max(max(bin2)));
 for rIndex = 1 : size(radii2,2)
     radius = radii2(rIndex);
@@ -61,13 +61,13 @@ for rIndex = 1 : size(radii2,2)
 %                 end
 %             end
             if maximum
-                pWinners = [pWinners transpose([r c radius bin2(r,c,rIndex)])];
+                Pupil_Winners = [Pupil_Winners transpose([r c radius bin2(r,c,rIndex)])];
             end
         end
     end
 end
 
-if size(pWinners,2) == 0
+if size(Pupil_Winners,2) == 0
    error('No winners elected during voting for pupil boundary.');
 end
 
@@ -101,7 +101,7 @@ for rIndex = 1 : size(radii,2) % For each possible radius being considered
 end
 
 % Find local maxima for iris/sclera boundary
-sWinners = [];
+Sclera_Winners = [];
 mostVotes = max(max(max(bin)));
 for rIndex = 1 : size(radii,2)
     radius = radii(rIndex);
@@ -120,18 +120,18 @@ for rIndex = 1 : size(radii,2)
 %                 end
 %             end
             if maximum
-                sWinners = [sWinners transpose([r c radius bin(r,c,rIndex)])];
+                Sclera_Winners = [Sclera_Winners transpose([r c radius bin(r,c,rIndex)])];
             end
         end
     end
 end
-size(sWinners,2)
-if size(sWinners,2) == 0
+size(Sclera_Winners,2)
+if size(Sclera_Winners,2) == 0
     error('No winners elected during voting for sclera boundary.');
 end
 
-for i = 1 : size(sWinners,2)
-    distances(i) = sqrt(double(pWinners(1,1)-sWinners(1,i))^2+double(pWinners(2,1)-sWinners(2,i))^2);
+for i = 1 : size(Sclera_Winners,2)
+    distances(i) = sqrt(double(Pupil_Winners(1,1)-Sclera_Winners(1,i))^2+double(Pupil_Winners(2,1)-Sclera_Winners(2,i))^2);
 end
 best = find(distances==min(distances));
 
@@ -140,10 +140,10 @@ for i = 1 : 3
     pseudo(:,:,i) = im2double(img);
 end
 numPoints = 480;
-for wIndex = 1 : size(sWinners,2)
-    r1 = int16(sWinners(1,wIndex));
-    c1 = int16(sWinners(2,wIndex));
-    radius = int16(sWinners(3,wIndex));
+for wIndex = 1 : size(Sclera_Winners,2)
+    r1 = int16(Sclera_Winners(1,wIndex));
+    c1 = int16(Sclera_Winners(2,wIndex));
+    radius = int16(Sclera_Winners(3,wIndex));
     for i = 1 : numPoints
         angle = 2*pi*i/numPoints;
         r = (r1 + int16(radius*sin(angle)));
@@ -160,10 +160,10 @@ for wIndex = 1 : size(sWinners,2)
     end
 end
 numPoints = 240;
-for wIndex = 1 : size(pWinners,2)
-    r1 = int16(pWinners(1,wIndex));
-    c1 = int16(pWinners(2,wIndex));
-    radius = int16(pWinners(3,wIndex));
+for wIndex = 1 : size(Pupil_Winners,2)
+    r1 = int16(Pupil_Winners(1,wIndex));
+    c1 = int16(Pupil_Winners(2,wIndex));
+    radius = int16(Pupil_Winners(3,wIndex));
     for i = 1 : numPoints
         angle = 2*pi*i/numPoints;
         r = (r1 + int16(radius*sin(angle)));
@@ -175,10 +175,10 @@ for wIndex = 1 : size(pWinners,2)
     end
 end
 
-pWinner = pWinners([2 1 3],1);
-if size(pWinners,2) > 1
+Pupil_Winners = Pupil_Winners([2 1 3],1);
+if size(Pupil_Winners,2) > 1
     disp('More than one potential winner identified for pupil boundary');
 end
-sWinner = sWinners([2 1 3],best);
+Sclera_Winners = Sclera_Winners([2 1 3],best);
 
 %figure;imshow(pseudo);
