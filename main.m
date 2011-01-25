@@ -13,7 +13,7 @@ GREEN = 2;
 directory = dir('*.png');
 %for i = 1 : size(directory,1)
    
-    filename = 'Iris.png';
+    filename = 'image3.jpg';
     
     % Read in original iris image
     img = imread(filename);
@@ -33,36 +33,24 @@ directory = dir('*.png');
         -column+width -row+height;];
     T = maketform('affine',H);
     bounds = findbounds(T,[1 1; [size(img,2) size(img,1)]]);
-    %bounds(1,:) = [1 1];
     img_m = imtransform(img,T,'XData',[1 size(img,2)],'YData',[1 size(img,1)]);
+    
+    
+    
+    min_size = min(height*2,width*2);
+    
+    r1 = floor(height-min_size/2)+1;
+    c1 = floor(width-min_size/2)+1;
+    r2 = floor(height+min_size/2);
+    c2 = floor(width+min_size/2);
+ 
+    
+    img_x = img_m(r1:r2,c1:c2,:);
+    min_size = min_size/2;
     for k = 1:3 
-        img2(:,:,k) = ImToPolar(img_m(:,:,k),radius/dist,radius_2/dist,(radius_2-radius)*2,(radius_2-radius)*2*pi);
+        img2(:,:,k) = ImToPolar(img_x(:,:,k),radius/min_size,radius_2/min_size,(radius_2-radius)*2,(radius_2-radius)*2*pi);
     end
     imshow(uint8(img2));
     
    
     
-    % Subsample by 2 to save computation
-   % img = img(1:2:size(img,1),1:2:size(img,2));
-
-    % Get the voters
-    
-    %figure;imshow(magnitude);
-    %figure;imshow(direction);
-
-    % Vote and determine winning circles for sclera and iris boundaries
-%     for k=1:4
-%         
-%         [magnitude, direction] = getVoters(imgs(:,:,k));
-%         [pseudo, bin, sWinner, pWinner] = FindWinners(magnitude, direction, imgs(:,:,k));
-%         %imwrite(pseudo, ['pseudo_' filename]);
-%         
-%     end
-    
-
-    % Unroll Cartesian working area into doubly-dimensionless
-    % pseudopolar coordinate system
-    %rectangle = unrollRing(img, pWinner, sWinner);
-    %figure;imshow(rectangle);
-    %imwrite(rectangle, ['unrolled_' filename]);
-%end

@@ -15,7 +15,8 @@ mask(find(value<PUPIL_THREASHOLD)) = 1;
 
 
 mask = imopen(mask,strel('square',7));
-imtool(mask);
+mask = clean_Pupil(mask);
+%imtool(mask);
 [r c] = find(mask==1);
 
 centroidInRowDirection = ones(1,length(r))*r / length(r);
