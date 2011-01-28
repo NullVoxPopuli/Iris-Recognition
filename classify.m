@@ -1,5 +1,5 @@
 function X = classify(elong,circ)
-    if((elong < 1.09) && (elong > 0.99))
+    if((elong < 1.18) && (elong > 0.99))
         if(circ > 11)
             X=3;
         else

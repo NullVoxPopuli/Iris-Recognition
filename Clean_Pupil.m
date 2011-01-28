@@ -4,13 +4,13 @@ function Mask_fixed = Clean_Pupil(Mask_In)
 %
 image = Mask_In;
 [image_labeled num] = bwlabel(image);
-imtool(image_labeled);
+%imtool(image_labeled);
 
 Data = zeros(num,4);
 
     for i=1:num
         [r c]  = find(image_labeled==i);
-        if(length(r) < .015*size(Mask_In,1)*size(Mask_In,2))
+        if(length(r) < .02*size(Mask_In,1)*size(Mask_In,2))
             image(find(image_labeled == i))=0;
             continue;
         end
@@ -52,5 +52,6 @@ Data = zeros(num,4);
 
     end
     disp(Data);
+    %imtool(image)
 Mask_fixed = image;
 end
