@@ -1,5 +1,7 @@
 function [img2] = main(img)
-close all
+clear
+clc
+
 global GRAY
 global RED
 global BLUE

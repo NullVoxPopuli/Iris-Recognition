@@ -7,32 +7,15 @@ SCLERA_THREASHOLD2 = .09;
 img_hsv = rgb2hsv(img);
 
 imshow(img);
-% 
-% value = img_hsv(:,:,3);
-% sat = img_hsv(:,:,2);
-% hue = img_hsv(:,:,1);
-
-fprintf('select 4 points along the edge of the iris that are not next to',...
-    'eachother. ideal distance between points is ?/2');
-
 a = impoint(gca);
 edgeOfIris = getPosition(a);
-radius1 = sqrt((edgeOfIris(1) - column_center)^2 + (edgeOfIris(2) - row_center)^2);
 
-a = impoint(gca);
-edgeOfIris = getPosition(a);
-radius2 = sqrt((edgeOfIris(1) - column_center)^2 + (edgeOfIris(2) - row_center)^2);
+value = img_hsv(:,:,3);
+sat = img_hsv(:,:,2);
+hue = img_hsv(:,:,1);
 
-a = impoint(gca);
-edgeOfIris = getPosition(a);
-radius3 = sqrt((edgeOfIris(1) - column_center)^2 + (edgeOfIris(2) - row_center)^2);
+radius = distance(edgueOfIris
 
-a = impoint(gca);
-edgeOfIris = getPosition(a);
-radius4 = sqrt((edgeOfIris(1) - column_center)^2 + (edgeOfIris(2) - row_center)^2);
-
-
-radius = (radius1 + radius2 + radius3 + radius4) / 4;
 
 % 
 % mask = zeros(size(img,1),size(img,2));
