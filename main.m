@@ -1,4 +1,4 @@
-function [img2] = main(img)
+function [img2, featureVector] = main(img)
 close all
 global GRAY
 global RED
@@ -49,5 +49,6 @@ directory = dir('*.png');
     end
     imshow(uint8(img2));
     
-   
+    % perform feature extraction
+    featureVector = extractFeatures(img2);
 end
