@@ -51,4 +51,7 @@ directory = dir('*.png');
     
     % perform feature extraction
     featureVector = extractFeatures(img2);
+    
+    % display stuff
+    imtool(reshape(featureVector / max(featureVector), 255, 96));
 end

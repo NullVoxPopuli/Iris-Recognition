@@ -8,13 +8,13 @@ radFinish = pi / 3;
 offset = 3 / 4;
 
 [xDim, yDim, zDim] = size(img);
-rowStep = xDim / 5;
+rowStep = int32(floor(xDim / 5));
 
 start = int32([(radStart * (1 / (2 * pi)) + offset) * yDim, ((radStart - pi) * (1 / (2 * pi)) + offset) * yDim]);
 finish = int32([(radFinish * (1 / (2 * pi)) + offset) * yDim, ((radFinish - pi) * (1 / (2 * pi)) + offset) * yDim]);
 
 % find the features for the 7 sections
-band1Features = extractStripFeatures(img(0:rowStep, :, :), 4);
+band1Features = extractStripFeatures(img(1:rowStep, :, :), 4);
 band2LFeatures = extractStripFeatures(img(rowStep+1:rowStep*2, start(1):finish(1), :), 2);
 band2RFeatures = extractStripFeatures(img(rowStep+1:rowStep*2, start(2):finish(2), :), 2);
 band3LFeatures = extractStripFeatures(img(rowStep*2+1:rowStep*3, start(1):finish(1), :), 4);
@@ -32,7 +32,7 @@ function [featureVector] = extractStripFeatures(imgStrip, subDiv)
     idxStep = int32(floor(yDim / (subDiv + 1)));
     
     featureIdx = 1;
-    featureVector = zeros(1, subDiv * 15 * 3);
+    featureVector = zeros(1, subDiv * 255 * 3);
     
     for i = 1 : subDiv
         idxStart = idxStep * (i - 1) + 1;
@@ -42,8 +42,8 @@ function [featureVector] = extractStripFeatures(imgStrip, subDiv)
             [counts, x] = imhist(uint8(imgStrip(:,idxStart:idxEnd,j)));
             
             % find the normalized samples from the histogram
-            for k = 1 : 255/12
-                featureVector(featureIdx) = counts(12 * k) / (xDim * double(idxStep));
+            for k = 1 : 255/1
+                featureVector(featureIdx) = counts(1 * k) / (xDim * double(idxStep));
                 featureIdx = featureIdx + 1;
             end
         end
