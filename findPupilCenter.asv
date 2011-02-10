@@ -1,0 +1,29 @@
+function [ row, column, radius ] = findPupilSizeAndLocation( img )
+%FINDPUPILCENTER Summary of this function goes here
+%[ row, column ] = findPupilCenter( img )
+%   Detailed explanation goes here
+PUPIL_THREASHOLD = .10;
+
+img_hsv = rgb2hsv(img);
+imtool(img_hsv);
+value = img_hsv(:,:,3);
+
+[r c] = find(value<PUPIL_THREASHOLD);
+disp(size(r))
+
+centroidInRowDirection = ones(1,length(r))*r / length(r);
+centroidInColDirection = ones(1,length(c))*c / length(c);
+
+% loop for correcting the center, in case of highlight on pupil
+row = centroidInRowDirection;
+column = centroidInColDirection;
+max_r = max(r);
+min_r = min(r);
+max_c = max(c);
+min_c = min(c);
+
+radius_r
+
+
+end
+
