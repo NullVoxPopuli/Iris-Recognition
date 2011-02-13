@@ -4,7 +4,7 @@ function Mask_fixed = Clean_Pupil(Mask_In)
 %
 image = Mask_In;
 [image_labeled num] = bwlabel(image);
-imtool(image_labeled);
+%imtool(image_labeled);
 
 Data = zeros(num,4);
 

@@ -2,9 +2,9 @@ function [ radius ] = findScleraSizeAndLocation( img, row_center, column_center 
 %FINDPUPILCENTER Summary of this function goes here
 %[ radius ] = findScleraSizeAndLocation( img, row_center, column_center )
 %   Detailed explanation goes here
-SCLERA_THREASHOLD1 = .65;
-SCLERA_THREASHOLD2 = .09;
-img_hsv = rgb2hsv(img);
+%SCLERA_THREASHOLD1 = .65;
+%SCLERA_THREASHOLD2 = .09;
+%img_hsv = rgb2hsv(img);
 
 imshow(img);
 % 
