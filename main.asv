@@ -1,6 +1,5 @@
-clear
-clc
-
+function [img2, featureVector] = main(img)
+close all
 global GRAY
 global RED
 global BLUE
@@ -13,10 +12,8 @@ GREEN = 2;
 directory = dir('*.png');
 %for i = 1 : size(directory,1)
    
-    filename = 'image2.jpg';
     
     % Read in original iris image
-    img = imread(filename);
     imgs(:,:,GRAY) = rgb2gray(img);
     imgs(:,:,RED)  = img(:,:,RED);
     imgs(:,:,BLUE) = img(:,:,BLUE);
@@ -34,7 +31,7 @@ directory = dir('*.png');
     T = maketform('affine',H);
     bounds = findbounds(T,[1 1; [size(img,2) size(img,1)]]);
     img_m = imtransform(img,T,'XData',[1 size(img,2)],'YData',[1 size(img,1)]);
-    
+    imtool(img_m);
     
     
     min_size = min(height*2,width*2);
@@ -52,5 +49,9 @@ directory = dir('*.png');
     end
     imshow(uint8(img2));
     
-   
+    % perform feature extraction
+    featureVector = extractFeatures(img2);
     
+    % display stuff
+    imtool(reshape(featureVector / max(featureVector), 255, 96));
+end

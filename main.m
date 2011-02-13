@@ -31,7 +31,7 @@ directory = dir('*.png');
     T = maketform('affine',H);
     bounds = findbounds(T,[1 1; [size(img,2) size(img,1)]]);
     img_m = imtransform(img,T,'XData',[1 size(img,2)],'YData',[1 size(img,1)]);
-    
+    imtool(img_m);
     
     
     min_size = min(height*2,width*2);
@@ -43,6 +43,7 @@ directory = dir('*.png');
  
     
     img_x = img_m(r1:r2,c1:c2,:);
+    imtool(img_x);
     min_size = min_size/2;
     for k = 1:3 
         img2(:,:,k) = ImToPolar(img_x(:,:,k),radius/min_size,radius_2/min_size,(radius_2-radius)*2,(radius_2-radius)*2*pi);
